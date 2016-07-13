@@ -15,25 +15,51 @@ namespace MzMerger
         [Test]
         public void testMergeSort()
         {
-            List<double> testOneList = new List<double>(){12.5082,185.0801,1510.5461,2000.1215};
-            List<double> testTwoList = new List<double>() { 13.5082, 186.0801, 1512.5461, 2022.1215};
-            List<double> checkList = new List<double>(){ 12.5082, 13.5082, 185.0801, 186.0801, 1510.5461, 1512.5461, 2000.1215, 2022.1215 };
+            List<double> testOneList = new List<double>(){ 129.1021, 204.1342, 216.134, 315.2028, 420.2077, 497.3074, 515.3183, 576.2971, 614.3826, 705.3383, 814.9211, 815.4234, 833.432, 932.4996, 933.5035, 1047.5243, 1160.6065, 1291.6455, 1292.6493, 1390.7148 };
+            List<double> testTwoList = new List<double>() { 129.1023, 204.1343, 216.1342, 315.2031, 420.2088, 497.3077, 515.3183, 576.2971, 614.3839, 705.3389, 815.4231, 833.433, 932.5014, 1047.5259, 1291.6454, 1369.1514, 1369.6582, 1370.1592, 1370.6724, 1390.7145 };
+            List<double> checkList = new List<double>(){ 129.1021, 129.1023, 204.1342, 204.1343, 216.134, 216.1342, 315.2028, 315.2031, 420.2077, 420.2088, 497.3074, 497.3077, 515.3183, 515.3183, 576.2971, 576.2971, 614.3826, 614.3839, 705.3383, 705.3389, 814.9211, 815.4231, 815.4234, 833.432, 833.433, 932.4996, 932.5014, 933.5035, 1047.5243, 1047.5259, 1160.6065, 1291.6454, 1291.6455, 1292.6493, 1369.1514, 1369.6582, 1370.1592, 1370.6724, 1390.7145, 1390.7148 };
             Assert.That(new MergeSort().mergeSort(testOneList, testTwoList), Is.EqualTo(checkList));
         }
 
         [Test]
-        public void testCalculatePeakMatchesZeroStart()//sometimes you might be missing one peak, but you do have the others, so this tests the first two matching
+        public void testMergeSort2()
         {
-            List<double> checkList = new List<double>() { 12.5082, 13.5082, 185.0801, 186.0801, 1510.5461, 1512.5461, 2000.1215, 2022.1215 };
-            Assert.That(new MergeSort().calculatePeakMatches(checkList.ToArray()), Is.EqualTo(2));
+            List<double> testOneList = new List<double>() { 129.1021, 204.1342, 216.134, 315.2028, 420.2077, 497.3074, 515.3183, 576.2971, 614.3826, 705.3383, 814.9211, 815.4234, 833.432, 932.4996, 933.5035, 1047.5243, 1160.6065, 1291.6455, 1292.6493, 1390.7148 };
+            List<double> testTwoList = new List<double>() { 120.0807, 129.1021, 186.1234, 204.1341, 216.1339, 244.0926, 262.118, 343.161, 391.1608, 399.1982, 420.2074, 515.3185, 576.2958, 614.3903, 705.338, 833.4318, 932.5006, 1047.5251, 1291.6463, 1390.7162 };
+            List<double> checkList = new List<double>() { 120.0807, 129.1021, 129.1021, 186.1234, 204.1341, 204.1342, 216.1339, 216.134, 244.0926, 262.118, 315.2028, 343.161, 391.1608, 399.1982, 420.2074, 420.2077, 497.3074, 515.3183, 515.3185, 576.2958, 576.2971, 614.3826, 614.3903, 705.338, 705.3383, 814.9211, 815.4234, 833.4318, 833.432, 932.4996, 932.5006, 933.5035, 1047.5243, 1047.5251, 1160.6065, 1291.6455, 1291.6463, 1292.6493, 1390.7148, 1390.7162 };
+            Assert.That(new MergeSort().mergeSort(testOneList, testTwoList), Is.EqualTo(checkList));
         }
 
         [Test]
-        public void testCalculatePeakMatchesFirstStartStart()//sometimes you might be missing one peak, but you do have the others, so this tests the first one being by itself
+        public void testMergeSort3()
         {
-            List<double> checkList = new List<double>() {1.000, 12.5082, 13.5082, 185.0801, 186.0801, 1510.5461, 1512.5461, 2000.1215, 2022.1215 };
-            Assert.That(new MergeSort().calculatePeakMatches(checkList.ToArray()), Is.EqualTo(2));
+            List<double> testOneList = new List<double>() { 115.0866, 129.1022, 136.0756, 143.0813, 205.1005, 226.1183, 234.1445, 244.129, 349.1711, 512.2333, 731.3385, 731.8417, 882.8914, 883.3919, 883.8919, 932.4258, 932.9235, 933.4252, 981.9614, 982.4613 };
+            List<double> testTwoList = new List<double>() { 102.0553, 104.0532, 115.0868, 120.081, 129.1024, 136.0758, 143.0815, 147.1129, 175.1191, 205.0997, 226.1184, 234.1445, 244.1292, 346.1235, 512.2339, 731.3389, 882.8903, 883.3907, 932.4248, 932.9239 };
+            List<double> checkList = new List<double>() { 102.0553, 104.0532, 115.0866, 115.0868, 120.081, 129.1022, 129.1024, 136.0756, 136.0758, 143.0813, 143.0815, 147.1129, 175.1191, 205.0997, 205.1005, 226.1183, 226.1184, 234.1445, 234.1445, 244.129, 244.1292, 346.1235, 349.1711, 512.2333, 512.2339, 731.3385, 731.3389, 731.8417, 882.8903, 882.8914, 883.3907, 883.3919, 883.8919, 932.4248, 932.4258, 932.9235, 932.9239, 933.4252, 981.9614, 982.4613 };
+            Assert.That(new MergeSort().mergeSort(testOneList, testTwoList), Is.EqualTo(checkList));
         }
 
+        [Test]
+        public void testCalculatePeakMatchesZeroPull1()//sometimes you might be missing one peak, but you do have the others, so this tests the first two matching
+        {
+            List<double> checkList = new List<double>() { 129.1021, 129.1023, 204.1342, 204.1343, 216.134, 216.1342, 315.2028, 315.2031, 420.2077, 420.2088, 497.3074, 497.3077, 515.3183, 515.3183, 576.2971, 576.2971, 614.3826, 614.3839, 705.3383, 705.3389, 814.9211, 815.4231, 815.4234, 833.432, 833.433, 932.4996, 932.5014, 933.5035, 1047.5243, 1047.5259, 1160.6065, 1291.6454, 1291.6455, 1292.6493, 1369.1514, 1369.6582, 1370.1592, 1370.6724, 1390.7145, 1390.7148 };
+            Assert.That(new MergeSort().calculatePeakMatches(checkList.ToArray()), Is.EqualTo(20));
+        }
+
+        
+
+        [Test]
+        public void testCalculatePeakMatchesZeroPull2()//sometimes you might be missing one peak, but you do have the others, so this tests the first two matching
+        {
+            List<double> checkList = new List<double>() { 120.0807, 129.1021, 129.1021, 186.1234, 204.1341, 204.1342, 216.1339, 216.134, 244.0926, 262.118, 315.2028, 343.161, 391.1608, 399.1982, 420.2074, 420.2077, 497.3074, 515.3183, 515.3185, 576.2958, 576.2971, 614.3826, 614.3903, 705.338, 705.3383, 814.9211, 815.4234, 833.4318, 833.432, 932.4996, 932.5006, 933.5035, 1047.5243, 1047.5251, 1160.6065, 1291.6455, 1291.6463, 1292.6493, 1390.7148, 1390.7162 };
+            Assert.That(new MergeSort().calculatePeakMatches(checkList.ToArray()), Is.EqualTo(14));
+        }
+
+        [Test]
+        public void testCalculatePeakMatchesZeroPull3()//sometimes you might be missing one peak, but you do have the others, so this tests the first two matching
+        {
+            List<double> checkList = new List<double>() { 102.0553, 104.0532, 115.0866, 115.0868, 120.081, 129.1022, 129.1024, 136.0756, 136.0758, 143.0813, 143.0815, 147.1129, 175.1191, 205.0997, 205.1005, 226.1183, 226.1184, 234.1445, 234.1445, 244.129, 244.1292, 346.1235, 349.1711, 512.2333, 512.2339, 731.3385, 731.3389, 731.8417, 882.8903, 882.8914, 883.3907, 883.3919, 883.8919, 932.4248, 932.4258, 932.9235, 932.9239, 933.4252, 981.9614, 982.4613 };
+            Assert.That(new MergeSort().calculatePeakMatches(checkList.ToArray()), Is.EqualTo(20));
+        }
     }
 }

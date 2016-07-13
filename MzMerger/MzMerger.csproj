@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinsForHistogramCreator.cs" />
     <Compile Include="MainProgram.cs" />
     <Compile Include="MergeSort.cs" />
     <Compile Include="PairsForComparison.cs" />

@@ -25,9 +25,9 @@ namespace MzMerger
             IdofPairsTable = ID;
         }
 
-        public void toDatabase()
-        {
-            string valuesForInputIntoHist = numberOfPeakMatches.ToString() + "," + editDist;// instead of this you need to create bins that contain the count of the 0-20 
-        }
+        //public void toHistBin()
+        //{
+        //    string valuesForInputIntoHist = numberOfPeakMatches.ToString() + "," + editDist;// instead of this you need to create bins that contain the count of the 0-20 
+        //}
     }
 }

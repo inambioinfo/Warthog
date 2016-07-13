@@ -19,7 +19,6 @@ namespace MzMerger
                 // Values are available here
                 Console.WriteLine("Starting Program.");
                 new SQLiteConnector(options); //.ToFile(); // this creates a new SortPairs and outputs the info to file/'
-                Console.ReadKey();
                 Console.WriteLine("Finished.");
             }
         }
