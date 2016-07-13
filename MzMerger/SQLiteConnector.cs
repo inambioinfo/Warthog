@@ -17,6 +17,7 @@ namespace MzMerger
         //public static List<string> inputs = new List<string>();
         public static List<string> mzList1List = new List<string>();
         public static List<string> mzList2List = new List<string>();
+        public static List<int> editDistList = new List<int>();
         public static string inputDir { get; set; }
 
         //constructor
@@ -37,12 +38,13 @@ namespace MzMerger
 
                 using (System.Data.SQLite.SQLiteCommand com = new System.Data.SQLite.SQLiteCommand(con))
                 {
-                    com.CommandText = "SELECT mzList FROM Spectrum CROSS JOIN Pairs WHERE Spectrum.ID = Pairs.id_scan1";// select the mzList where the id from the pairs table matches the id from the spectrum table
+                    com.CommandText = "SELECT mzList, editDist FROM Spectrum CROSS JOIN Pairs WHERE Spectrum.ID = Pairs.id_scan1";// select the mzList where the id from the pairs table matches the id from the spectrum table
                     using (System.Data.SQLite.SQLiteDataReader reader = com.ExecuteReader())
                     {
                         while (reader.Read())
-                        {
-                            //store mzList values into a list
+                        {   
+                            //store mzList values into a list and store the pair edit distance value to a separate list, we can iterate through all three together 
+                            editDistList.Add(Convert.ToInt32(reader["editDist"]));
                             mzList1List.Add(reader["mzList"].ToString());
                         }
                     }
@@ -57,20 +59,15 @@ namespace MzMerger
                     }
                     for (int i = 0; i  < mzList1List.Count; i++)//
                     {   
-                        //store mzList1 and mzList2 into an object holding those values
-                        inputs.Add(new PairsForComparison(mzList1List[i], mzList2List[i], i));
-                        //inputs.Add(new PairsForComparison(mzList1List[i], mzList2List[i], i).toDatabase());
-                        //putObjectsIntoNewDB(inputs Join);
-                        //inputs = new List<string>(); //this is data dumping instead of storing all into memory
+                        //store the two lists and then the ID for the pair
+                        inputs.Add(new PairsForComparison(mzList1List[i], mzList2List[i], editDistList[i], i));
                     }
                 }
                 con.Close(); // Close the connection to the database
             }
-            //do something with list of inputs now
-            //for (int i =0; i< inputs.Count; i++) { Console.WriteLine("the values are: " + inputs[i].numberOfPeakMatches);}
         }
 
-        public static void putObjectsIntoNewDB(string valuesToInsert)
+        public static void putObjectsIntoHist(string valuesToInsert)
         {
             //you will get a string and then input to the database every 800-1000 or so
         }

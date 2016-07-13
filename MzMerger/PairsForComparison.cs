@@ -12,12 +12,14 @@ namespace MzMerger
         public double[] mzListOne { get; set; }
         public double[] mzListTwo { get; set; }
         public double[] mergedList { get; set; }
+        public int editDist { get; set; }
         public int numberOfPeakMatches {get;set;}
 
-        public PairsForComparison(string mzList1, string mzList2, int ID)
+        public PairsForComparison(string mzList1, string mzList2, int edit_Dist,int ID)
         {   
             mzListOne = mzList1.Split(',').Select(n => Convert.ToDouble(n)).ToArray();// convert the string from the database into an array of type double
             mzListTwo = mzList2.Split(',').Select(n => Convert.ToDouble(n)).ToArray();
+            editDist = edit_Dist;
             mergedList = new MergeSort().mergeSort(mzListOne.OfType<double>().ToList(), mzListTwo.OfType<double>().ToList());
             numberOfPeakMatches = new MergeSort().calculatePeakMatches(mergedList);
             IdofPairsTable = ID;
@@ -25,7 +27,7 @@ namespace MzMerger
 
         public void toDatabase()
         {
-            string valuesForInputIntoDB = numberOfPeakMatches.ToString();
+            string valuesForInputIntoHist = numberOfPeakMatches.ToString() + "," + editDist;// instead of this you need to create bins that contain the count of the 0-20 
         }
     }
 }
