@@ -77,7 +77,6 @@
     <Compile Include="BinsForHistogramCreator.cs" />
     <Compile Include="MainProgram.cs" />
     <Compile Include="MergeSort.cs" />
-    <Compile Include="PairsForComparison.cs" />
     <Compile Include="ParseCommandLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLiteConnector.cs" />

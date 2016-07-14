@@ -12,7 +12,7 @@ namespace MzMerger
         public static List<double> emptyList = new List<double>();
         public static List<double> mergedList = new List<double>();
         public int numberOfPeakMatches = 0;
-        public double tolerance = 0.7;//lowered from 1
+        public double tolerance = 0.05;// the m/z value for which we could consider peaks to be the same thing. it could honestly be 0.05 but we'll try this.
 
         public double[] mergeSort(List<double> mzListOne, List<double> mzListTwo)
         { 
@@ -46,7 +46,6 @@ namespace MzMerger
 
         public int calculatePeakMatches(double[] mergedArray)
         {
-            Console.WriteLine("we are getting peaks");
             for (int i = 0; i < mergedArray.Length-1; i++)
             {
                 if (Math.Abs(mergedArray[i] - mergedArray[i + 1]) <= tolerance)
@@ -54,15 +53,7 @@ namespace MzMerger
                     numberOfPeakMatches ++;
                 }
             }
-            if (numberOfPeakMatches > 20)// this needs to be addressed first 07-13-2016 (list of 40 values, maybe more than two in a row are within one unit) 
-                //could just lower the tolerance - look into this
-            {
-                return 20;
-            }
-            else
-            {
-                return numberOfPeakMatches;
-            }
+            return numberOfPeakMatches;
         }
     }
 }
