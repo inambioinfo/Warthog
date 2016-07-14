@@ -20,11 +20,13 @@ namespace MzMerger
         public static List<int> editDistList = new List<int>();
         public static List<int> pairIDList = new List<int>();
         public static string inputDir { get; set; }
+        public static string outputFilename { get; set; }
 
         //constructor
         public SQLiteConnector(ParseCommandLine options)
         {
             inputDir = options.InputDir;
+            outputFilename = options.outputFileName;
             GetItemsFromDatabase();
         }
 
@@ -89,7 +91,7 @@ namespace MzMerger
                 numberOfPeakMatchesList.Add(numberOfPeakMatches);
             }
 
-            BinsForHistogramCreator.createBins(editDistList, numberOfPeakMatchesList);
+            BinsForHistogramCreator.createBins(editDistList, numberOfPeakMatchesList, outputFilename);
 
             //send each of the elements to the bin creator
             //BinsForHistogramCreator.createBins(inputs);

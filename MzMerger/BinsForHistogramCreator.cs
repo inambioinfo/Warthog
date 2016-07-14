@@ -16,13 +16,12 @@ namespace MzMerger
         //public static int[] binsForEdit2 = new int[20];
         public static int[] binsForRandom = new int[21];
 
-        public static void createBins(List<int> editDist, List<int> numberOfPeakMatches)
+        public static void createBins(List<int> editDist, List<int> numberOfPeakMatches, string outputFilename)
             //List<PairsForComparison> inputs
         {
             for (int i = 0; i < editDist.Count; i++)
                 if (editDist[i] == 0)
                 {
-                    Console.WriteLine("error here: " + (numberOfPeakMatches[i]));
                     binsForEdit0[numberOfPeakMatches[i]] ++;
                 }
                 else if (editDist[i] == 1)
@@ -42,8 +41,8 @@ namespace MzMerger
                 //    binsForRandom[inputs[i].numberOfPeakMatches]++;
                 //}
 
-
-            string text = @"C:\Users\sieb277\Desktop\bins0.txt";
+            
+            string text = outputFilename;
             using (TextWriter writer = File.CreateText(text))
             {
                 for (int i = 0; i < binsForEdit0.Length; i++)
@@ -55,8 +54,9 @@ namespace MzMerger
                     writer.Write(binsForRandom[i]);
                     writer.WriteLine();
                 }
-
             }
+            Console.WriteLine("Finished. Press any key to continue.");
+            Console.ReadKey();
         }
     }
 }
