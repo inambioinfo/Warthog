@@ -9,9 +9,6 @@ namespace MzMerger
 {
     class UnitTestsForMzMerger
     {
-        //Visual checks 5 random spectra collected in database have passed 07-12-2016
-        //{a-37511:pass,
-
         [Test]
         public void testMergeSort()
         {

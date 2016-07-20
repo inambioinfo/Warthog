@@ -12,7 +12,7 @@ namespace MzMerger
         public static List<double> emptyList = new List<double>();
         public static List<double> mergedList = new List<double>();
         public int numberOfPeakMatches = 0;
-        public double tolerance = 0.05;// the m/z value for which we could consider peaks to be the same thing. it could honestly be 0.05 but we'll try this.
+        public double tolerance = 0.01;// the m/z value for which we could consider peaks to be the same thing. Updated to 0.01, getting matches of over 20
 
         public double[] mergeSort(List<double> mzListOne, List<double> mzListTwo)
         { 

@@ -10,37 +10,47 @@ namespace MzMerger
 {
     class BinsForHistogramCreator
     {
-
+        //creates bins to store the peak matches at each edit distance
         public static int[] binsForEdit0 = new int[21];
         public static int[] binsForEdit1 = new int[21];
-        //public static int[] binsForEdit2 = new int[20];
+        public static int[] binsForEdit2 = new int[21];
         public static int[] binsForRandom = new int[21];
 
         public static void createBins(List<int> editDist, List<int> numberOfPeakMatches, string outputFilename)
-            //List<PairsForComparison> inputs
         {
             for (int i = 0; i < editDist.Count; i++)
                 if (editDist[i] == 0)
                 {
-                    binsForEdit0[numberOfPeakMatches[i]] ++;
+                    if (numberOfPeakMatches[i] > 20)
+                    {
+                        Console.WriteLine("greater than 20, at 0 edit: " + numberOfPeakMatches[i]);
+                    }
+                    else { binsForEdit0[numberOfPeakMatches[i]]++; }
                 }
                 else if (editDist[i] == 1)
                 {
-                    binsForEdit1[numberOfPeakMatches[i]]++;
+                    if (numberOfPeakMatches[i] > 20)
+                    {
+                        Console.WriteLine("greater than 20, at 1 edit: " + numberOfPeakMatches[i]);
+                    }
+                    else { binsForEdit1[numberOfPeakMatches[i]]++; }
+                }
+                else if (editDist[i] == 2)
+                {
+                    if (numberOfPeakMatches[i] > 20)
+                    {
+                        Console.WriteLine("greater than 20, at 2 edit: " + numberOfPeakMatches[i]);
+                    }
+                    else { binsForEdit2[numberOfPeakMatches[i]]++; }
                 }
                 else if (editDist[i] == 1000) //1000 will specify random
                 {
-                    binsForRandom[numberOfPeakMatches[i]]++;
+                    if (numberOfPeakMatches[i] > 20)
+                    {
+                        Console.WriteLine("greater than 20, random: " + numberOfPeakMatches[i]);
+                    }
+                    else { binsForRandom[numberOfPeakMatches[i]]++; }
                 }
-                //if (inputs[i].editDist == 2)
-                //{
-                //    binsForEdit2[inputs[i].numberOfPeakMatches]++;
-                //}
-                //if (inputs[i].editDist >= 3)
-                //{
-                //    binsForRandom[inputs[i].numberOfPeakMatches]++;
-                //}
-
             
             string text = outputFilename;
             using (TextWriter writer = File.CreateText(text))
@@ -51,6 +61,8 @@ namespace MzMerger
                     writer.Write("\t");
                     writer.Write(binsForEdit1[i]);
                     writer.Write("\t");
+                    writer.Write(binsForEdit2[i]);
+                    writer.Write("\t");
                     writer.Write(binsForRandom[i]);
                     writer.WriteLine();
                 }
@@ -60,24 +72,3 @@ namespace MzMerger
         }
     }
 }
-
-
-//for (int i = 0; i<inputs.Count; i++)
-//            {
-//                if (inputs[i].editDist == 0)
-//                {
-//                    binsForEdit0[inputs[i].numberOfPeakMatches] ++;
-//                }
-//                if (inputs[i].editDist == 1)
-//                {
-//                    binsForEdit1[inputs[i].numberOfPeakMatches]++;
-//                }
-//                //if (inputs[i].editDist == 2)
-//                //{
-//                //    binsForEdit2[inputs[i].numberOfPeakMatches]++;
-//                //}
-//                //if (inputs[i].editDist >= 3)
-//                //{
-//                //    binsForRandom[inputs[i].numberOfPeakMatches]++;
-//                //}
-//            }
