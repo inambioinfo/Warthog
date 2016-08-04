@@ -11,24 +11,26 @@ namespace MzMerger
     public class ParseCommandLine
     {
             [Option('r', "read", Required = true,
-              HelpText = "Input file to be processed.")]
-            public string InputDir { get; set; }
+              HelpText = "Input the path of the Query database.")]
+            public string QueryDBPath { get; set; }
 
             [Option('v', "verbose", DefaultValue = true,
               HelpText = "Prints all messages to standard output.")]
             public bool Verbose { get; set; }
 
-            [Option('e', "eVal", DefaultValue = 1e-10,
-                  HelpText = "Specifies the minimum cutoff for e-values.")]
-            public double SpecEValCutoff { get; set; }
+            [Option('d', "dir", Required = true,
+              HelpText = "Input the path of the Library database.")]
+            public string LibraryDBPath { get; set; }
+
+            [Option('p', "path", Required = true,
+              HelpText = "Input the path of the LibraryQueryPair database.")]
+            public string QueryLibraryPairsDBPath { get; set; }
 
             [Option('o', "outputFileName", DefaultValue = "RenameYourOutput.csv",
-                      HelpText = "The name of your output file.")]
+              HelpText = "The name of your output file.")]
             public string outputFileName { get; set; }
 
-           //example of the proper format for command line - as below
-
-
+           
 
         [ParserState]
             public IParserState LastParserState { get; set; }

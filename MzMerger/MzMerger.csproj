@@ -47,6 +47,15 @@
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MwtWinDll">
+      <HintPath>lib\MwtWinDll.dll</HintPath>
+    </Reference>
+    <Reference Include="MwtWinDllTestCS">
+      <HintPath>lib\MwtWinDllTestCS.exe</HintPath>
+    </Reference>
+    <Reference Include="MwtWinDllTestCS.vshost">
+      <HintPath>lib\MwtWinDllTestCS.vshost.exe</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\nunit.framework.2.63.0\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -74,17 +83,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BinsForHistogramCreator.cs" />
+    <Compile Include="binner.cs" />
+    <Compile Include="Library.cs" />
     <Compile Include="MainProgram.cs" />
-    <Compile Include="MergeSort.cs" />
+    <Compile Include="MwtCalc.cs" />
     <Compile Include="ParseCommandLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query.cs" />
     <Compile Include="SQLiteConnector.cs" />
     <Compile Include="UnitTestsForMzMerger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="MyApplication.app, Version=1.0.0.0">
+      <Name>MwtWinDllTestCS.vshost.exe.manifest</Name>
+      <HintPath>lib\MwtWinDllTestCS.vshost.exe.manifest</HintPath>
+    </NativeReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.102.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.102.0\build\net451\System.Data.SQLite.Core.targets')" />

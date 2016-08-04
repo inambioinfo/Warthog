@@ -13,105 +13,79 @@ namespace MzMerger
 {
     class SQLiteConnector // here you will query the database and collect the matching pairs with their mzLists to send to the bin counter
     {
+
         //property accessors
-        //public static List<string> inputs = new List<string>();
-        public static List<double[]> mzList1List = new List<double[]>();
-        public static List<double[]> mzList2List = new List<double[]>();
-        public static List<string> aggregateValuesToDraw = new List<string>();//this is for drawing random values all at once
-        public static List<int> editDistList = new List<int>();
-        public static List<int> pairIDList = new List<int>();
-        public static int numberOfRandomPairsToAdd =1000;
-        public static string inputDir { get; set; }
+        public static List<Library> listOfAllLibraries = new List<Library>();
+        public static List<Query> listOfAllQueries = new List<Query>();
+        public static List<string> listOfLibraryIDs = new List<string>();
+        public static int numberOfRandomPairsToAdd =10000;
+        public static string QueryDBPath { get; set; }
+        public static string LibraryDBPath { get; set; }
+        public static string QueryLibraryPairsDB { get; set; }
         public static string outputFilename { get; set; }
+        public static string aggregateLibraryIDs { get; set; }
 
         //constructor
         public SQLiteConnector(ParseCommandLine options)
         {
-            inputDir = options.InputDir;
+            QueryDBPath = options.QueryDBPath;
+            LibraryDBPath = options.LibraryDBPath;
             outputFilename = options.outputFileName;
+            QueryLibraryPairsDB = options.QueryLibraryPairsDBPath;
             GetItemsFromDatabase(); // this opens the database and grabs all of our actual data
         }
 
-        public static void GetRandomItemsFromDatabase()
+        private static void GetItemsFromDatabase()
         {
-            Random rnd = new Random();
+            List<int> numberOfPeakMatchesList = new List<int>();
+            List<string> toDatabaseList = new List<string>();
+            var Binner = new Binner();
             using (
-                System.Data.SQLite.SQLiteConnection con =
-                    new System.Data.SQLite.SQLiteConnection("data source=" + inputDir + ".db3"))
+                System.Data.SQLite.SQLiteConnection conn =
+                    new System.Data.SQLite.SQLiteConnection("data source=" + LibraryDBPath + ".db3"))
             {
-                con.Open();
-                using (System.Data.SQLite.SQLiteCommand com = new System.Data.SQLite.SQLiteCommand(con))
-                {   //select the pair of mzLists, the edit distance for the pair, and the pair ID from the database
-                    int counter = 0;
-                    for (int p = 0; p < numberOfRandomPairsToAdd; p++)
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "ATTACH '" + QueryDBPath + ".db3' AS db2;";
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "ATTACH '" + QueryLibraryPairsDB + ".db3' AS dbPair;";
+                    cmd.ExecuteNonQuery();
+
+
+                    //This select statement is equivalent to if I had used inner joins between the tables.  This version is just in an older style.
+                    cmd.CommandText = "SELECT main.Spectrum.mzList, main.Spectrum.charge, main.Spectrum.precursor, main.Spectrum.peptide, main.Files.path, " +
+                                       "db2.QuerySpectrum.mzList, db2.QuerySpectrum.charge, db2.QuerySpectrum.precursor, db2.Files.path " +
+                                       "FROM main.Spectrum, main.Files, db2.Files, db2.QuerySpectrum, dbPair.QueryLibraryPair " +
+                                       "WHERE main.Spectrum.ID = dbPair.QueryLibraryPair.id_Library AND db2.QuerySpectrum.ID = dbPair.QueryLibraryPair.id_Query " +
+                                       "AND db2.QuerySpectrum.codex = db2.Files.codex AND main.Spectrum.codex = main.Files.codex " +
+                                       "AND dbPair.QueryLibraryPair.PeakMatchNumber<11;";
+                    
+                    using (var reader = cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult))
                     {
-                        int randint1 = rnd.Next(1, 20000);
-                        int randint2 = rnd.Next(1, 20000);
-                        string valuesToRandomlyDraw = "(" + randint1 + "," + randint2 + ")";
-                        com.CommandText = "SELECT mzList from Spectrum WHERE ID IN " + valuesToRandomlyDraw;
-
-                        using (System.Data.SQLite.SQLiteDataReader reader = com.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                counter++;
-                                if (counter % 2 != 0) //the counter is odd
-                                {
-                                    mzList1List.Add(reader["mzList"].ToString().Split(',').Select(n => Convert.ToDouble(n)).ToArray());
-                                }
-                                else if (counter % 2 == 0)//the counter is even 
-                                {
-                                    mzList2List.Add(reader["mzList"].ToString().Split(',').Select(n => Convert.ToDouble(n)).ToArray());//converts object into string and then into a double array
-                                    editDistList.Add(1000);
-                                }
-                            }
-                        }
-
-                    }
-                }
-                con.Close(); // Close the connection to the database
-            }
-        }
-
-        public static void GetItemsFromDatabase()
-        //07-12-2016 need to update so that not reading all lines, only maybe 1000 at a time
-        {
-            using (
-                System.Data.SQLite.SQLiteConnection con =
-                    new System.Data.SQLite.SQLiteConnection("data source=" + inputDir + ".db3"))
-            {
-                con.Open();
-                using (System.Data.SQLite.SQLiteCommand com = new System.Data.SQLite.SQLiteCommand(con))
-                {   //select the pair of mzLists, the edit distance for the pair, and the pair ID from the database
-                    com.CommandText = "SELECT mzList, editDist, Pairs.ID from Spectrum, Pairs WHERE Spectrum.ID in (Pairs.id_scan1, Pairs.id_scan2)";
-
-                    using (System.Data.SQLite.SQLiteDataReader reader = com.ExecuteReader())
-                    {
-                        int counter = 0;
                         while (reader.Read())
                         {
-                            counter++;
-                            //store mzList values into a list and store the pair edit distance value to a separate list, we can iterate through all three together 
-                            if (counter % 2 == 0) //the counter is even 
+                            Library oneLibrary = new Library(Convert.ToInt32(reader.GetString(1)), reader.GetString(3), reader.GetString(0).Split(',').Select(n => Convert.ToDouble(n)).ToArray(), reader.GetString(4), Convert.ToDouble(reader.GetString(2)));
+                            Query oneQuery = new Query(Convert.ToInt32(reader.GetString(6)), reader.GetString(5).Split(',').Select(n => Convert.ToDouble(n)).ToArray(), reader.GetString(8), Convert.ToDouble(reader.GetString(7)));
+                            listOfAllLibraries.Add(oneLibrary);
+                            listOfAllQueries.Add(oneQuery);
+                            if(listOfAllLibraries.Count %50 == 0) { Console.WriteLine("processed: " + listOfAllLibraries.Count); }
+                            if (listOfAllLibraries.Count >= 500)
+                            //if(listOfAllLibraries.Count %1000 ==0)
                             {
-                                mzList2List.Add(reader["mzList"].ToString().Split(',').Select(n => Convert.ToDouble(n)).ToArray());//converts object into string and then into a double array
-                                editDistList.Add(Convert.ToInt32(reader["editDist"]));
-                                pairIDList.Add(Convert.ToInt32(reader["ID"]));
-                            }
-                            else // the counter is odd
-                            {
-                                mzList1List.Add(reader["mzList"].ToString().Split(',').Select(n => Convert.ToDouble(n)).ToArray());
+                                Binner.processor(listOfAllQueries, listOfAllLibraries);
+                                listOfAllLibraries = new List<Library>();
+                                listOfAllQueries = new List<Query>();
+                               // break;
                             }
                         }
-                        GetRandomItemsFromDatabase(); // this adds random values to the list before sending to the peak matcher
                     }
+                    Binner.sendToFile(outputFilename);
                 }
-                con.Close(); // Close the connection to the database 
+                conn.Close();
             }
-            MainProgram.sendToFile(mzList1List, mzList2List, editDistList, pairIDList, outputFilename);
-        }
-    }   
+        }   
+    }
 }
-
 
 

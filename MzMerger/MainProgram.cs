@@ -5,44 +5,54 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using CommandLine;
-using CommandLine.Text;
-
+using System.Diagnostics;
 
 namespace MzMerger
 {
     class MainProgram
     {
-        //public string options.outputFilename { get; set;}
-        //create constructors
+        private static List<double> emptyList = new List<double>();
+        private static List<double> mergedList = new List<double>();
+
         static void Main(string[] args)
         {
             var options = new ParseCommandLine();
             if (CommandLine.Parser.Default.ParseArguments(args, options))
-            {  
+            {
                 // Values are available here
                 Console.WriteLine("Starting Program.");
-                new SQLiteConnector(options); //.ToFile(); // this creates a new SortPairs and outputs the info to file/'
-
+                new SQLiteConnector(options);
                 Console.WriteLine("Finished.");
             }
         }
-        
-        // This is the main program that calls all of the other functions
-        public static void sendToFile(List<double[]> mzList1List, List<double[]> mzList2List, List<int> editDistList, List<int> pairIdList, string outputFilename)
+        public static double[] mergeSort(List<double> mzListOne, List<double> mzListTwo)
         {
-            List<int> numberOfPeakMatchesList = new List<int>();
-            for (int i = 0; i < mzList1List.Count; i++)
+            while (mzListOne.Count > 0 && mzListTwo.Count > 0)//mzListOne != null || mzListTwo != null ||
             {
-                //THREE THINGS: PairID and , editDist, and MatchScore ------------------------------------------
-                double[] mergedList = new MergeSort().mergeSort(mzList1List[i].OfType<double>().ToList(),
-                    mzList2List[i].OfType<double>().ToList());
-                int numberOfPeakMatches = new MergeSort().calculatePeakMatches(mergedList);
-                numberOfPeakMatchesList.Add(numberOfPeakMatches);
+                if (mzListOne.First() <= mzListTwo.First())
+                {
+                    emptyList.Add(mzListOne.First());
+                    mzListOne.Remove(mzListOne.First()); //drop the head of mzListOne
+                }
+                else
+                {
+                    emptyList.Add(mzListTwo.First());
+                    mzListTwo.Remove(mzListTwo.First()); //drop the head of mzListTwo
+                }
             }
-            //Console.WriteLine("The total number of low scoring pairs is: " + counterForLowScorePair);
-            //sending to the bin counter to create a histogram
-            BinsForHistogramCreator.createBins(editDistList, numberOfPeakMatchesList, outputFilename);
+            while (mzListOne != null && mzListOne.Count > 0)
+            {
+                emptyList.Add(mzListOne.First());
+                mzListOne.Remove(mzListOne.First()); //drop the head of mzListOne
+            }
+            while (mzListTwo != null && mzListTwo.Count > 0)
+            {
+                emptyList.Add(mzListTwo.First());
+                mzListTwo.Remove(mzListTwo.First()); //drop the head of mzListTwo
+            }
+            mergedList = emptyList;
+            emptyList = new List<double>();
+            return mergedList.ToArray();
         }
     }
 }

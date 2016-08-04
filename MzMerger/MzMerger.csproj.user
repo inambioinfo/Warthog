@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>-r "C:\Users\sieb277\Documents\Visual Studio 2015\Projects\SpectrumDatabaseCreator\SpectrumDatabaseCreator\bin\Debug\MatchingPairsDBLargeSimDiffOrg" -o "C:\Users\sieb277\Desktop\MatchingPairBins_Largetest.txt"</StartArguments>
+    <StartArguments>-r "C:\Users\sieb277\Documents\Visual Studio 2015\Projects\QueryBuilder\QueryBuilder\bin\Debug\QueryDBSmall" -d "C:\Users\sieb277\Documents\Visual Studio 2015\Projects\SpectrumDatabaseCreator\SpectrumDatabaseCreator\bin\Debug\small_testDB" -p "C:\Users\sieb277\Documents\Visual Studio 2015\Projects\QueryAndLibraryPairCreator\QueryAndLibraryPairCreator\bin\Debug\LibraryAndQueryPairsDB" -o "C:\Users\sieb277\Desktop\LOOOK.txt"</StartArguments>
   </PropertyGroup>
 </Project>
