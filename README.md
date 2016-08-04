@@ -2,7 +2,7 @@
 Software to compare mass spectra and determine how many similar peaks there are between them
 
 ##Versions:
-v1: Original Version:
+####v1: Original Version:
 
 This program reads in data from the database created in BabyKingLionCub and bins the number of overlapping peaks per edit distance.
 It then outputs the bins to a text file that can be used to make a histogram.  If you do not specify a path for your output file, it 
@@ -15,7 +15,7 @@ will automatically store to the Debug folder.
 
 
 ---
-v2: MzMergerWithPeakShifting:
+####v2: MzMergerWithPeakShifting:
 
 This program is similar to the original version, but now has been updated with the Query and Library objects.  Within the Library
 class is a new set of methods which creates alternative versions of the original m/z list from the database created in 
