@@ -119,5 +119,14 @@ namespace MzMerger
             List<double> checkList = new List<double>() { 102.055, 110.0714, 120.0808, 129.102, 129.1022, 130.0649, 136.0754, 136.0756, 147.1126, 159.0912, 199.071, 200.1391, 216.0975, 218.1495, 226.0817, 226.1181, 228.1339, 244.0922, 244.1289, 261.1553, 298.1032, 315.1292, 343.1599, 374.2386, 459.3279, 475.2859, 584.762, 585.2638, 588.3688, 922.3692, 1035.7957, 1036.1309, 1036.4625, 1168.5145, 1329.1099, 1329.607, 1422.6464, 1447.6745, 1448.6753, 1515.1708 };
             Assert.That(new MergeSort().calculatePeakMatches(checkList.ToArray()), Is.EqualTo(4));
         }
+        //--------------------For Peak Shifting------------------------------
+        [Test]
+        public void testCalculateMassDifference()
+        {
+            double precursor1 = 1712.95235265891;
+            double precursor2 = 1585.862142;
+            double massDiff = precursor1 - precursor2;
+
+        }
     }
 }
